@@ -1,0 +1,6 @@
+{
+    "appID":"",
+    "appsecret":"",
+    "templateID":"",
+    "users":[""]
+}
