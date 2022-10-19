@@ -7,6 +7,7 @@ from chinese_calendar import is_holiday, is_workday
 class keyMsg():
     def __init__(self):
         self.sysday = datetime.date.today()  # 只获取日期
+        #self.sysday = datetime.date(2022,5,30)  # 只获取日期
 
     # 通过天气api获取天气信息
     def weather(self):
@@ -35,7 +36,6 @@ class keyMsg():
     def loveDays(self):
         # 获得天数
         loveday = datetime.date(2019, 5, 30)
-        self.sysday = datetime.date.today()  
         delta_days = (self.sysday - loveday).days
         # 获得年月
         months = (self.sysday.year - loveday.year)*12 + (self.sysday.month - loveday.month)
@@ -55,14 +55,14 @@ class keyMsg():
             last_month_final = self.sysday - datetime.timedelta(days=self.sysday.day)
             if last_month_final.day == 31:
                 days = days+1
-        #输出文本
-        if days != 0:
-            return f"{delta_days}天"
-        else:
-            if months != 0:
-                return f"{years}年{months}个月"
-            else:
-                return f"\{years}年\n"
+        return [years,months,days,delta_days]
+
+    # 计算在一起的时长
+    def calDays(self,targetDay):
+        # 获得天数
+        tmp = targetDay.split("-")
+        Tday = datetime.date(int(tmp[0]), int(tmp[1]), int(tmp[2]))
+        return (self.sysday - Tday).days
 
     # 计算发工资天数
     def moneyDays(self,moneyday):
@@ -109,7 +109,6 @@ class keyMsg():
 
     # 计算农历
     def lunarDay(self):
-        self.sysday = datetime.date.today()  # 只获取日期
         #今日农历
         ymc = [u"正", u"二", u"三", u"四", u"五", u"六", u"七", u"八", u"九", u"十", u"十一", u"十二",]
         rmc = [u"初一", u"初二", u"初三", u"初四", u"初五", u"初六", u"初七", u"初八", u"初九", u"初十",

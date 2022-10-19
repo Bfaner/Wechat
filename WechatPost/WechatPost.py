@@ -5,6 +5,20 @@ from keyMsg import keyMsg
 def sendMessage(accessToken,user,config,msg):
     url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(accessToken)
     cityInfo,weatherInfo,tempInfo = msg.weather()
+    years,months,days,delta_days = msg.loveDays()
+    if days == 0:
+        if months == 0:
+            year,yeartxt = f"{years}","年啦"
+            month,monthtxt = "",""
+            day,daytxt= "",""
+        else:
+            year,yeartxt = f"{years}","年"
+            month,monthtxt = f"{months}","个月啦"
+            day,daytxt= "",""
+    else:
+        year,yeartxt = "",""
+        month,monthtxt = "",""
+        day,daytxt= f"{delta_days}","天"
     ywBirthday = msg.toBrithday()
     if ywBirthday == 0:
         birthdayText = "阅宝宝生日快乐！"
@@ -23,6 +37,8 @@ def sendMessage(accessToken,user,config,msg):
         MoneyText = "今天阅宝宝发工资啦！"
     else:
         MoneyText = f"发工资倒计时：帆小生{bfMoneyDay}天，阅宝宝{ywMoneyDay}天"
+    to111 = -msg.calDays("2023-1-11")
+    to111 = f"{to111}"
     data = {
         "touser": user,
         "template_id": config["templateID"],
@@ -33,9 +49,29 @@ def sendMessage(accessToken,user,config,msg):
                 "value": msg.today(),
                 "color": "#00B271"
                 },
-            "loveday":{
-                "value": msg.loveDays(),
+            "year":{
+                "value": year,
                 "color": "#479AC7"
+                },
+            "yeartxt":{
+                "value": yeartxt,
+                "color": "#000000"
+                },
+            "month":{
+                "value": month,
+                "color": "#479AC7"
+                },
+            "monthtxt":{
+                "value": monthtxt,
+                "color": "#000000"
+                },
+            "day":{
+                "value": day,
+                "color": "#479AC7"
+                },
+            "daytxt":{
+                "value": daytxt,
+                "color": "#000000"
                 },
             "city":{
                 "value": cityInfo,
@@ -55,6 +91,10 @@ def sendMessage(accessToken,user,config,msg):
                 },
             "Holiday":{
                 "value": HolidayText,
+                "color": "#B45B3E"
+                },
+            "to111":{
+                "value": to111,
                 "color": "#B45B3E"
                 },
             "MoneyText":{
