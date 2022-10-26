@@ -125,4 +125,6 @@ if __name__ == '__main__':
     
     for user in config["users"]:
         sendMessage(accessToken,user,config,msg)
+
+    input('Press Enter to exit...')
     

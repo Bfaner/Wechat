@@ -184,8 +184,8 @@ class Message(object):
         # 重要，在id中填写自己绑定的id
         url = 'http://miaotixing.com/trigger?id='+self.id+'&text='+self.text
         response = requests.get(url)
-        print(response.text)
-        print(url)
+        # print(response.text)
+        # print(url)
 
 #喵提醒发送信息
 def send_message(name,text):
