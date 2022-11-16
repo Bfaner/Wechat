@@ -6,6 +6,7 @@ import web
 import xml.dom.minidom as minixml
 from GenXml import toXml
 import time
+import requests
 
 from web.template import ALLOWED_AST_NODES
 ALLOWED_AST_NODES.append('Constant')

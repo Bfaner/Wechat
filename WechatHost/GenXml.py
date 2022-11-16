@@ -1,6 +1,5 @@
 import xml.dom.minidom as minixml
 import time
-import requests
 
 class toXml():
         def textXml(toUser,fromUser,reply):
