@@ -14,7 +14,7 @@ class Handle(object):
     def GET(self):
         try:
             data = web.input()
-            print(data)
+            #print(data)
             if len(data) == 0:
                 return "hello, this is handle view"
             signature = data.signature
@@ -26,9 +26,9 @@ class Handle(object):
             list = [token, timestamp, nonce]
             list.sort()
             str = list[0]+list[1]+list[2]
-            print(str)
+            #print(str)
             hashcode = hashlib.sha1(str.encode('utf-8')).hexdigest()
-            print("handle/GET func: hashcode, signature: ", hashcode, signature)
+            #print("handle/GET func: hashcode, signature: ", hashcode, signature)
             if hashcode == signature:
                 return echostr
             else:
@@ -45,17 +45,26 @@ class Handle(object):
         GetMsgType = rootNode.getElementsByTagName("MsgType")[0].childNodes[0].data
         if GetMsgType == 'text':
             GetContent = rootNode.getElementsByTagName("Content")[0].childNodes[0].data
-            PostXml = toXml.textXml(GetFromUser,GetToUser,GetContent)
+            reply = ""
+            if GetContent == "你好" or GetContent == "hello":
+                reply = "你好，小阅阅"
+            else:
+                qkyUrls='http://api.qingyunke.com/api.php?key=free&appid=0&msg='+GetContent
+                response = requests.get(qkyUrls)
+                reply = json.loads(response.content)
+                reply = reply['content']
+            PostXml = toXml.textXml(GetFromUser,GetToUser,reply)
         elif GetMsgType == 'image':
             GetContent = rootNode.getElementsByTagName("MediaId")[0].childNodes[0].data
             PostXml = toXml.imageXml(GetFromUser,GetToUser,GetContent)
         else:
             GetContent = "未识别的消息"
             PostXml = toXml.textXml(GetFromUser,GetToUser,"你好，该功能尚在维护中")
-        print(PostXml)
+        #print(PostXml)
         note = open('log.txt','a+')
-        note.write('Time: '+time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))+'\n')
+        note.write('【'+time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))+'】\n')
         note.write(GetFromUser+' : '+GetContent+'\n')
+        note.write('AutoReply : '+reply+'\n')
         note.close()
         return PostXml
         

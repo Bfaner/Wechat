@@ -1,8 +1,9 @@
 import xml.dom.minidom as minixml
 import time
+import requests
 
 class toXml():
-        def textXml(toUser,fromUser,Content):
+        def textXml(toUser,fromUser,reply):
                 impl = minixml.getDOMImplementation()
                 domTree = impl.createDocument(None, 'xml', None)
                 rootNode = domTree.documentElement
@@ -24,10 +25,7 @@ class toXml():
                 TypeNode.appendChild(TypeNodeTxt)
                 #新建节点-content
                 contentNode = domTree.createElement("Content")
-                if Content == "你好" or Content == "hello":
-                    contentNodeTxt = domTree.createCDATASection("你好，小阅阅")
-                else:
-                    contentNodeTxt = domTree.createCDATASection(Content)
+                contentNodeTxt = domTree.createCDATASection(reply)
                 contentNode.appendChild(contentNodeTxt)
                 #加入根节点中
                 rootNode.appendChild(toUserNode)
